@@ -1,17 +1,7 @@
-FROM amazoncorretto:17.0.7-alpine
+FROM openjdk:17-jdk-slim
 
-# Add app user
-ARG APPLICATION_USER=appuser
-RUN adduser --no-create-home -u 1000 -D $APPLICATION_USER
+ARG JAR_FILE=jenkinsTest-0.0.1-SNAPSHOT.jar
 
-# Configure working directory
-RUN mkdir /app && \
-    chown -R $APPLICATION_USER /app
+COPY $JAR_FILE myboot.jar
 
-USER 1000
-
-COPY --chown=1000:1000 ./myapp-0.0.1-SNAPSHOT.jar /app/app.jar
-WORKDIR /app
-
-EXPOSE 8080
-ENTRYPOINT [ "java", "-jar", "/app/app.jar" ]
+ENTRYPOINT ["java","-jar","/myboot.jar"]
